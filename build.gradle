@@ -1,0 +1,44 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+version = '1.1.0'
+group = 'dev.cloudlyrics'
+base { archivesName = 'cloudlyrics-26.1.2-neoforge' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+repositories { mavenCentral() }
+dependencies { testRuntimeOnly('com.google.code.gson:gson:2.11.0') { transitive = false } }
+neoForge {
+    version = '26.1.2.112'
+    runs { client { client() } }
+    mods { cloudlyrics { sourceSet(sourceSets.main) } }
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('jar') {
+    from(['LICENSE', 'THIRD_PARTY_NOTICES.md']) { into 'META-INF' }
+    from('licenses') { into 'META-INF/licenses' }
+}
+tasks.register('coreTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.cloudlyrics.CoreTest'
+}
+tasks.named('check') { dependsOn 'coreTest' }
+tasks.register('launcherTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.cloudlyrics.LauncherTest'
+}
+tasks.named('check') { dependsOn 'launcherTest' }
+tasks.register('launcherProbe', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.cloudlyrics.LauncherProbe'
+}
+// Tests use the dependency-free executable harness above, rather than a JUnit engine.
+tasks.named('test') { failOnNoDiscoveredTests = false }
+tasks.register('liveProbe', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.cloudlyrics.LiveProbe'
+}

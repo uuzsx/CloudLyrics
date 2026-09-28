@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="cloudlyrics"
+version="1.1.0"
+displayName="云歌词 · Cloud Lyrics"
+authors="Cloud Lyrics"
+description='''将 Windows 网易云音乐正在播放的歌词逐句显示在自己的聊天框。单 JAR 安装，输入 /cloudlyrics launch 启动网易云连接。'''
+
+[[dependencies.cloudlyrics]]
+modId="neoforge"
+type="required"
+versionRange="[26.1.2.112,26.2)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.cloudlyrics]]
+modId="minecraft"
+type="required"
+versionRange="[26.1.2]"
+ordering="NONE"
+side="CLIENT"

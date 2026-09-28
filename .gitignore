@@ -1,0 +1,24 @@
+# Build outputs and local Minecraft instances
+.gradle/
+build/
+run/
+runs/
+bin/
+out/
+logs/
+crash-reports/
+
+# IDE and machine-specific files
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+local.properties
+.env
+.env.*
+*.log
+*.hprof
+.DS_Store
+Thumbs.db

@@ -1,0 +1,37 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const code = fs.readFileSync('src/main/resources/cloudlyrics/reader.js','utf8');
+const context = vm.createContext({});
+vm.runInContext(`
+var window = globalThis;
+var frame={current:12.345,playId:'A_1'};
+var state={playing:{resourceTrackId:'A',playId:'A_1',resourceName:'Test',resourceArtists:[{name:'Artist'}],playingState:2},
+ 'async:lyric':{lyricLines:[{time:-1,lyric:'credit'},{time:10,lyric:'line'}]}};
+var app={getStore:()=>state};
+var req=function(){};
+req.c={11:{exports:{a:app}},128:{exports:{b:()=>frame}}};
+req.m={128:function(){return 'subscribePlayStatus "playprogress"';}};
+window.webpackJsonp={push:entry=>entry[1].cloudlyrics_reader_v1({}, {}, req)};
+`,context);
+const read = () => JSON.parse(JSON.stringify(vm.runInContext(code,context)));
+let checks=0;
+const check=(fn)=>{fn();checks++;};
+check(()=>assert.equal(read().positionMs,12345));
+check(()=>assert.equal(read().lyrics.length,1));
+vm.runInContext(`state.playing.playingState=1`,context);
+check(()=>assert.equal(read().playing,false));
+vm.runInContext(`state.playing.resourceTrackId='B';state.playing.playId='B_1';frame.playId='B_1'`,context);
+check(()=>assert.equal(read().status,'loading'));
+check(()=>assert.equal(read().lyrics.length,0));
+vm.runInContext(`state['async:lyric'].lyricLines=[{time:2,lyric:'new'}]`,context);
+check(()=>assert.equal(read().lyrics[0].text,'new'));
+vm.runInContext(`frame.playId='A_1'`,context);
+check(()=>assert.equal(read().status,'loading'));
+vm.runInContext(`frame.playId='B_1';state['async:lyric'].isLoading=true`,context);
+check(()=>assert.equal(read().lyrics.length,0));
+vm.runInContext(`state['async:lyric'].isLoading=false;state['async:lyric'].lyricLines=[]`,context);
+check(()=>assert.equal(read().status,'no_synced_lyrics'));
+vm.runInContext(`state['async:lyric'].isLyricFetchFailed=true`,context);
+check(()=>assert.equal(read().status,'unavailable'));
+console.log('PASS: '+checks+' Cloud Music adapter checks');
