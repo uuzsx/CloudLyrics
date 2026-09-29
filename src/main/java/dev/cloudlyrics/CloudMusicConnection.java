@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-/** Background, loopback-only CDP reader. It never calls playback-control or account APIs. */
+/** Loopback reader. Lyric requests use the player's API without changing playback or opening UI. */
 public final class CloudMusicConnection implements AutoCloseable {
     private static final Gson GSON = new Gson();
     private final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -73,9 +73,9 @@ public final class CloudMusicConnection implements AutoCloseable {
             receivedNanos = System.nanoTime();
             detail = switch (frame.status()) {
                 case "ready" -> frame.playing() ? "已连接 · 正在播放" : "已连接 · 已暂停";
-                case "loading" -> "已连接 · 等待播放进度或歌词加载";
+                case "loading" -> "已连接 · 正在后台加载歌词";
                 case "no_synced_lyrics" -> "这首歌没有带时间轴的歌词";
-                case "unavailable" -> "网易云暂时未取得歌词";
+                case "unavailable" -> "歌词暂时获取失败，将自动重试";
                 default -> "已连接 · 等待播放歌曲";
             };
         } catch (Exception e) {
