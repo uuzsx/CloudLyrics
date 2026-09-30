@@ -2,14 +2,14 @@ plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.147'
 }
-version = '1.2.0'
+version = '1.2.1'
 group = 'dev.cloudlyrics'
 base { archivesName = 'cloudlyrics-26.1.2-neoforge' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 repositories { mavenCentral() }
 dependencies { testRuntimeOnly('com.google.code.gson:gson:2.11.0') { transitive = false } }
 neoForge {
-    version = '26.1.2.112'
+    version = '26.1.2.109'
     runs { client { client() } }
     mods { cloudlyrics { sourceSet(sourceSets.main) } }
 }

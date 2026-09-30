@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="cloudlyrics"
-version="1.2.0"
+version="1.2.1"
 displayName="云歌词 · Cloud Lyrics"
 authors="Cloud Lyrics"
 description='''将 Windows 网易云音乐的歌词逐句显示在自己的聊天框，无需开启桌面歌词或歌词页。单 JAR 安装，输入 /cloudlyrics launch 启动网易云连接。'''
@@ -12,7 +12,7 @@ description='''将 Windows 网易云音乐的歌词逐句显示在自己的聊�
 [[dependencies.cloudlyrics]]
 modId="neoforge"
 type="required"
-versionRange="[26.1.2.112,26.2)"
+versionRange="[26.1.2.109,26.2)"
 ordering="NONE"
 side="CLIENT"
 
