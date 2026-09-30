@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ClickEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLPaths;
@@ -67,7 +66,7 @@ public final class CloudLyrics {
         }
         String lyric = emitter.accept(frame, offsetMs);
         if (lyric != null) {
-            mc.gui.getChat().addClientSystemMessage(Component.literal("♪ ")
+            ClientPlatform.showChat(Component.literal("♪ ")
                 .withStyle(ChatFormatting.LIGHT_PURPLE)
                 .append(Component.literal(lyric).withStyle(ChatFormatting.WHITE)));
         }
@@ -134,19 +133,19 @@ public final class CloudLyrics {
         return 1;
     }
     private static void launchHint() {
-        Minecraft.getInstance().gui.getChat().addClientSystemMessage(Component.literal("[云歌词] ")
+        ClientPlatform.showChat(Component.literal("[云歌词] ")
             .withStyle(ChatFormatting.LIGHT_PURPLE)
             .append(Component.literal("输入 /cloudlyrics launch 启动网易云并连接歌词。若网易云已开着，请先从托盘退出。 ")
                 .withStyle(ChatFormatting.GRAY))
             .append(Component.literal("[点击填入指令]").withStyle(style -> style.withColor(ChatFormatting.AQUA)
-                .withUnderlined(true).withClickEvent(new ClickEvent.SuggestCommand("/cloudlyrics launch")))));
+                .withUnderlined(true).withClickEvent(ClientPlatform.suggestCommand("/cloudlyrics launch")))));
     }
     private int toggle(boolean value) {
         enabled = value; connection.setEnabled(value); emitter.reset(); save();
         info(value ? "云歌词已开启。" : "云歌词已关闭。"); return 1;
     }
     private static void info(String text) {
-        Minecraft.getInstance().gui.getChat().addClientSystemMessage(
+        ClientPlatform.showChat(
             Component.literal("[云歌词] ").withStyle(ChatFormatting.LIGHT_PURPLE)
                 .append(Component.literal(text).withStyle(ChatFormatting.GRAY)));
     }

@@ -1,0 +1,8 @@
+{
+  "1.21.1": { "neoForge": "21.1.1", "neoRange": "[21.1.1,21.2)", "java": 21, "platform": "legacy" },
+  "1.21.2": { "neoForge": "21.2.0-beta", "neoRange": "[21.2.0-beta,21.3)", "java": 21, "platform": "legacy" },
+  "26.1.1": { "neoForge": "26.1.1.0-beta", "neoRange": "[26.1.1.0-beta,26.1.2)", "java": 25, "platform": "modern" },
+  "26.1.2": { "neoForge": "26.1.2.71", "neoRange": "[26.1.2.71,26.2)", "java": 25, "platform": "modern" },
+  "26.2": { "neoForge": "26.2.0.57", "neoRange": "[26.2.0.57,26.3)", "java": 25, "platform": "hud" },
+  "26.3": { "neoForge": "26.3.0.0-beta", "neoRange": "[26.3.0.0-beta,26.4)", "java": 25, "platform": "hud" }
+}

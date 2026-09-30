@@ -1,4 +1,4 @@
-# 云歌词 · Cloud Lyrics 1.2.1（单 JAR 版）
+# 云歌词 · Cloud Lyrics 1.3.0
 
 将 Windows 网易云音乐的歌词，跟随播放进度逐句显示在 Minecraft 自己的聊天框。
 
@@ -6,15 +6,24 @@
 
 **[下载最新 JAR](https://github.com/uuzsx/CloudLyrics/releases/latest)** · [更新记录](CHANGELOG.md)
 
-适用：Minecraft Java 26.1.2 · NeoForge 26.1.2.109+（26.1.2 系列）· Windows 网易云音乐桌面客户端。
+支持 Minecraft Java **1.21.1、1.21.2、26.1.1、26.1.2、26.2、26.3** 的 NeoForge 客户端，以及 Windows 网易云音乐桌面客户端。
 
 ## 发布与安装
 
-**发布时只上传 `cloudlyrics-26.1.2-neoforge-1.2.1.jar` 即可。** 不需要配套 CMD、PS1、额外启动器或网易云插件；模组也不会解压运行这类脚本。
+**玩家只安装与游戏版本对应的一个 JAR。** 不需要配套 CMD、PS1、额外启动器或网易云插件；模组也不会解压运行这类脚本。
 
-需要 Minecraft Java **26.1.2**、NeoForge **26.1.2.109 或更高的 26.1.2 构建**、Java 25，以及 Windows 网易云音乐桌面客户端。只安装在游戏客户端。
+| Minecraft 版本 | NeoForge 最低版本 | Java | 下载文件 |
+| --- | --- | --- | --- |
+| 1.21.1 | 21.1.1 | 21 | [cloudlyrics-1.21.1-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-1.21.1-neoforge-1.3.0.jar) |
+| 1.21.2 | 21.2.0-beta | 21 | [cloudlyrics-1.21.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-1.21.2-neoforge-1.3.0.jar) |
+| 26.1.1 | 26.1.1.0-beta | 25 | [cloudlyrics-26.1.1-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.1.1-neoforge-1.3.0.jar) |
+| 26.1.2 | 26.1.2.71 | 25 | [cloudlyrics-26.1.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.1.2-neoforge-1.3.0.jar) |
+| 26.2 | 26.2.0.57 | 25 | [cloudlyrics-26.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.2-neoforge-1.3.0.jar) |
+| 26.3 | 26.3.0.0-beta | 25 | [cloudlyrics-26.3-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.3-neoforge-1.3.0.jar) |
 
-1.2.1 将 NeoForge 最低要求从 26.1.2.112 降至 26.1.2.109。使用 109 的整合包可以直接安装新版，无需为云歌词升级加载器。Minecraft 版本仍须为 26.1.2；本次没有增加其他 Minecraft 版本的支持。
+最低版本均为对应分支的构建验证基线，允许该 Minecraft 分支内更高的 NeoForge 构建。1.21.2、26.1.1、26.3 的验证基线本身带有 `beta` 标记。26.1.2 的最低要求进一步降至 71，因此也包含此前支持的 109、112。
+
+这些是六个独立适配包，**不要同时安装，也不要把一个版本的 JAR 放进另一版本的游戏**。仅安装在客户端；不支持 Forge 或 Fabric。
 
 玩家把 JAR 放进相应游戏实例的 `mods` 文件夹并重启游戏。升级时请移出旧版本 JAR，避免重复加载。旧版启动脚本可以不用了。
 
@@ -82,26 +91,35 @@
 
 ## 验证情况
 
-- 1.2.1 使用 NeoForge 26.1.2.109 编译打包成功。
-- 已启动独立 NeoForge 26.1.2.109 开发客户端，加载云歌词 1.2.1 并完成客户端资源初始化，日志无错误或异常；随后正常关闭。未逐一验证第三方整合包。
-- 16 项歌词时间轴测试、21 项启动路径/参数/分支测试、22 项网易云读取适配器测试通过。
+- 1.3.0 的六个目标均使用上表中的 NeoForge 基线独立编译打包成功。
+- 六个版本均启动了独立开发客户端，完成模组加载、界面资源初始化并正常退出。没有在每个版本中重新进入世界验证歌词画面，也未逐一验证第三方整合包。
+- 每个目标通过 16 项歌词时间轴测试和 21 项启动路径/参数/分支测试，共享网易云读取器通过 22 项测试。
+- 六个 JAR 均检查了实际 Minecraft/NeoForge 依赖范围、Java 字节码版本和共享歌词资源，确认没有混入其他版本的适配器或外部启动脚本。
 - 已实测桌面歌词和主窗口歌词页均关闭时，从空的模组缓存加载歌词、切换歌曲以及播放进度持续前进。网易云界面缓存停留在旧歌时，模组仍取得新歌歌词。
 - 已通过实际 Java 连接与逐句输出引擎验证播放进度、歌词读取和关闭/重连。
 - 已验证运行中进程识别、通过注册信息查找非默认安装位置、已有连接的复用。
-- 歌词读取与聊天框显示代码沿用 1.2.0；上面的关闭歌词界面、切歌与同步实测来自 1.2.0 验证。
+- 独立歌词读取逻辑沿用 1.2.0；上面的关闭歌词界面、切歌与同步实测来自 1.2.0 验证。聊天框与指令提示的接口按游戏版本分别适配。
 - 未运行播放器的启动分支已通过替身测试，尚未进行完整冷启动实测，也未验证其他网易云版本、电脑或正式整合包的兼容性。
+
+26.2/26.3 测试日志包含本机 OSHI 无法读取 Windows 英文性能计数器的提示，客户端仍完成初始化并正常退出；未发现云歌词加载或类链接错误。
 
 ## 源码与构建
 
 开发者可克隆本仓库或下载 GitHub 提供的源码压缩包；普通玩家只需要 [Release 中的 JAR](https://github.com/uuzsx/CloudLyrics/releases/latest)。
 
 ```text
-gradlew.bat build
+gradlew.bat build "-PmcVersion=1.21.1"
 node tests/reader.test.cjs
 ```
 
-安装 JDK 25 后执行上述命令。`build` 会执行 Java 逻辑与启动流程测试；JavaScript 测试需 Node.js。
+`mcVersion` 可选 `1.21.1`、`1.21.2`、`26.1.1`、`26.1.2`、`26.2`、`26.3`，默认 `26.1.2`。构建产物在 `build/<游戏版本>/libs/`，开发客户端在独立的 `runs/<游戏版本>/` 目录中运行。
 
-可选本机验证：`gradlew.bat launcherProbe`（要求网易云已经按连接方式运行，不重启播放器），`gradlew.bat liveProbe`（实际播放与重连验证），`gradlew.bat runClient`（NeoForge 开发客户端）。源码中的 Gradle Wrapper 是开发构建工具，不是玩家安装要求。
+Gradle 推荐由 JDK 25 启动，编译 1.21.x 还需本机安装 JDK 21。`build` 会执行 Java 逻辑与启动流程测试；JavaScript 测试需 Node.js。全部构建后，运行 `python tests/artifacts.test.py` 检查六个发布包（需要 Python 3.11+）。Windows 开发者可执行 `scripts/build-all.ps1` 完成全量构建与检查；该脚本不随玩家 JAR 发布。
+
+版本矩阵集中在 `gradle/targets.json`。`versions/` 中的六个 Gradle 子项目各自保存独立的任务与构建状态，`-PmcVersion` 只选中一个子项目；使用 `gradlew.bat build "-PallVersions=true"` 可在一次构建中生成全部版本。
+
+`src/main` 保存共享业务逻辑；`src/platform/legacy`、`modern`、`hud` 分别适配 1.21.x、26.1.x、26.2/26.3 的聊天接口，每个子项目只编译选中的适配器。
+
+可选本机验证：`gradlew.bat launcherProbe`（要求网易云已经按连接方式运行，不重启播放器），`gradlew.bat liveProbe`（实际播放与重连验证），`gradlew.bat runClient "-PmcVersion=26.3"`（选定版本的 NeoForge 开发客户端）。源码中的 Gradle Wrapper 是开发构建工具，不是玩家安装要求。
 
 参考：[NeoForge 官方 MDK](https://github.com/NeoForgeMDKs/MDK-26.1.2-ModDevGradle)、[CloudMusic Desktop MCP](https://github.com/Seraph310/cloudmusic-desktop-mcp)、[Windows App Paths 注册信息](https://learn.microsoft.com/en-us/windows/win32/shell/app-registration)、[Java ProcessBuilder](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ProcessBuilder.html)。

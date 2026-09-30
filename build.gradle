@@ -1,44 +1,65 @@
 plugins {
-    id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.147'
+    id 'base'
+    id 'net.neoforged.moddev' version '2.0.147' apply false
 }
-version = '1.2.1'
+version = '1.3.0'
 group = 'dev.cloudlyrics'
-base { archivesName = 'cloudlyrics-26.1.2-neoforge' }
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
-repositories { mavenCentral() }
-dependencies { testRuntimeOnly('com.google.code.gson:gson:2.11.0') { transitive = false } }
-neoForge {
-    version = '26.1.2.109'
-    runs { client { client() } }
-    mods { cloudlyrics { sourceSet(sourceSets.main) } }
+def targets = new groovy.json.JsonSlurper().parse(file('gradle/targets.json'))
+
+// Distinct project/task identities keep Gradle's incremental outputs isolated per game version.
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'net.neoforged.moddev'
+    version = rootProject.version
+    group = rootProject.group
+    def minecraftVersion = projectDir.name
+    def target = targets[minecraftVersion]
+    layout.buildDirectory = rootProject.layout.projectDirectory.dir("build/${minecraftVersion}")
+    base { archivesName = "cloudlyrics-${minecraftVersion}-neoforge" }
+    java.toolchain.languageVersion = JavaLanguageVersion.of(target.java as int)
+    sourceSets {
+        main {
+            java.setSrcDirs([rootProject.file('src/main/java'), rootProject.file("src/platform/${target.platform}/java")])
+            resources.setSrcDirs([rootProject.file('src/main/resources')])
+        }
+        test {
+            java.setSrcDirs([rootProject.file('src/test/java')])
+            resources.setSrcDirs([])
+        }
+    }
+    repositories { mavenCentral() }
+    dependencies { testRuntimeOnly('com.google.code.gson:gson:2.11.0') { transitive = false } }
+    neoForge {
+        version = target.neoForge
+        runs {
+            client {
+                client()
+                gameDirectory = rootProject.file("runs/${minecraftVersion}")
+            }
+        }
+        mods { cloudlyrics { sourceSet(sourceSets.main) } }
+    }
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+    tasks.named('processResources') {
+        def metadata = [mod_version: project.version, minecraft_version: minecraftVersion, neo_range: target.neoRange]
+        inputs.properties(metadata)
+        filesMatching('META-INF/neoforge.mods.toml') { expand(metadata) }
+    }
+    tasks.named('jar') {
+        from([rootProject.file('LICENSE'), rootProject.file('THIRD_PARTY_NOTICES.md')]) { into 'META-INF' }
+        from(rootProject.file('licenses')) { into 'META-INF/licenses' }
+    }
+    [coreTest: 'CoreTest', launcherTest: 'LauncherTest', launcherProbe: 'LauncherProbe', liveProbe: 'LiveProbe'].each { taskName, entryPoint ->
+        tasks.register(taskName, JavaExec) {
+            dependsOn testClasses
+            workingDir = rootProject.projectDir
+            classpath = sourceSets.test.runtimeClasspath
+            mainClass = "dev.cloudlyrics.${entryPoint}"
+        }
+    }
+    tasks.named('check') { dependsOn 'coreTest', 'launcherTest' }
+    // Tests use the executable harness above, rather than a JUnit engine.
+    tasks.named('test') { failOnNoDiscoveredTests = false }
 }
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-tasks.named('jar') {
-    from(['LICENSE', 'THIRD_PARTY_NOTICES.md']) { into 'META-INF' }
-    from('licenses') { into 'META-INF/licenses' }
-}
-tasks.register('coreTest', JavaExec) {
-    dependsOn testClasses
-    classpath = sourceSets.test.runtimeClasspath
-    mainClass = 'dev.cloudlyrics.CoreTest'
-}
-tasks.named('check') { dependsOn 'coreTest' }
-tasks.register('launcherTest', JavaExec) {
-    dependsOn testClasses
-    classpath = sourceSets.test.runtimeClasspath
-    mainClass = 'dev.cloudlyrics.LauncherTest'
-}
-tasks.named('check') { dependsOn 'launcherTest' }
-tasks.register('launcherProbe', JavaExec) {
-    dependsOn testClasses
-    classpath = sourceSets.test.runtimeClasspath
-    mainClass = 'dev.cloudlyrics.LauncherProbe'
-}
-// Tests use the dependency-free executable harness above, rather than a JUnit engine.
-tasks.named('test') { failOnNoDiscoveredTests = false }
-tasks.register('liveProbe', JavaExec) {
-    dependsOn testClasses
-    classpath = sourceSets.test.runtimeClasspath
-    mainClass = 'dev.cloudlyrics.LiveProbe'
-}
+tasks.named('assemble') { dependsOn subprojects.collect { "${it.path}:assemble" } }
+tasks.named('check') { dependsOn subprojects.collect { "${it.path}:check" } }

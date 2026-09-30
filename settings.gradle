@@ -5,3 +5,12 @@ pluginManagement {
     }
 }
 rootProject.name = 'cloudlyrics'
+def targets = new groovy.json.JsonSlurper().parse(file('gradle/targets.json'))
+def selected = providers.gradleProperty('mcVersion').getOrElse('26.1.2')
+def allVersions = providers.gradleProperty('allVersions').getOrElse('false').toBoolean()
+if (!targets.containsKey(selected)) throw new GradleException("Unsupported mcVersion '${selected}'. Choose: ${targets.keySet().join(', ')}")
+(allVersions ? targets.keySet() : [selected]).each { mc ->
+    def projectName = 'mc' + mc.replace('.', '_')
+    include(projectName)
+    project(":${projectName}").projectDir = file("versions/${mc}")
+}
