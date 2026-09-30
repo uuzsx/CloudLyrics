@@ -1,4 +1,10 @@
-# 云歌词 · Cloud Lyrics 1.3.0
+# 云歌词 · Cloud Lyrics 1.3.1
+
+![CloudLyrics Logo](src/main/resources/cloudlyrics-logo.png)
+
+**作者：幼幼紫**
+
+让音乐陪你挖矿、建造与冒险。
 
 将 Windows 网易云音乐的歌词，跟随播放进度逐句显示在 Minecraft 自己的聊天框。
 
@@ -14,12 +20,12 @@
 
 | Minecraft 版本 | NeoForge 最低版本 | Java | 下载文件 |
 | --- | --- | --- | --- |
-| 1.21.1 | 21.1.1 | 21 | [cloudlyrics-1.21.1-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-1.21.1-neoforge-1.3.0.jar) |
-| 1.21.2 | 21.2.0-beta | 21 | [cloudlyrics-1.21.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-1.21.2-neoforge-1.3.0.jar) |
-| 26.1.1 | 26.1.1.0-beta | 25 | [cloudlyrics-26.1.1-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.1.1-neoforge-1.3.0.jar) |
-| 26.1.2 | 26.1.2.71 | 25 | [cloudlyrics-26.1.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.1.2-neoforge-1.3.0.jar) |
-| 26.2 | 26.2.0.57 | 25 | [cloudlyrics-26.2-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.2-neoforge-1.3.0.jar) |
-| 26.3 | 26.3.0.0-beta | 25 | [cloudlyrics-26.3-neoforge-1.3.0.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.0/cloudlyrics-26.3-neoforge-1.3.0.jar) |
+| 1.21.1 | 21.1.1 | 21 | [cloudlyrics-1.21.1-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-1.21.1-neoforge-1.3.1.jar) |
+| 1.21.2 | 21.2.0-beta | 21 | [cloudlyrics-1.21.2-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-1.21.2-neoforge-1.3.1.jar) |
+| 26.1.1 | 26.1.1.0-beta | 25 | [cloudlyrics-26.1.1-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-26.1.1-neoforge-1.3.1.jar) |
+| 26.1.2 | 26.1.2.71 | 25 | [cloudlyrics-26.1.2-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-26.1.2-neoforge-1.3.1.jar) |
+| 26.2 | 26.2.0.57 | 25 | [cloudlyrics-26.2-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-26.2-neoforge-1.3.1.jar) |
+| 26.3 | 26.3.0.0-beta | 25 | [cloudlyrics-26.3-neoforge-1.3.1.jar](https://github.com/uuzsx/CloudLyrics/releases/download/v1.3.1/cloudlyrics-26.3-neoforge-1.3.1.jar) |
 
 最低版本均为对应分支的构建验证基线，允许该 Minecraft 分支内更高的 NeoForge 构建。1.21.2、26.1.1、26.3 的验证基线本身带有 `beta` 标记。26.1.2 的最低要求进一步降至 71，因此也包含此前支持的 109、112。
 
@@ -90,6 +96,8 @@
 模组通过播放器现有接口请求歌词并读取播放状态，不读取账号凭据。模组的 Java 连接只访问本机；歌词请求由网易云客户端自己的网络接口完成，不将歌词上传至其他服务。普通方式重新启动网易云会关闭这项调试接口。
 
 ## 验证情况
+
+- 1.3.1 为作者、简介和 Logo 更新；已重新打包六个版本，并核对每个 JAR 的元数据和原始 Logo 文件。游戏逻辑未改动，客户端运行验证沿用下述 1.3.0 结果。
 
 - 1.3.0 的六个目标均使用上表中的 NeoForge 基线独立编译打包成功。
 - 六个版本均启动了独立开发客户端，完成模组加载、界面资源初始化并正常退出。没有在每个版本中重新进入世界验证歌词画面，也未逐一验证第三方整合包。

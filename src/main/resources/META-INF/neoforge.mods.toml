@@ -6,8 +6,15 @@ license="MIT"
 modId="cloudlyrics"
 version="${mod_version}"
 displayName="云歌词 · Cloud Lyrics"
-authors="Cloud Lyrics"
-description='''将 Windows 网易云音乐的歌词逐句显示在自己的聊天框，无需开启桌面歌词或歌词页。单 JAR 安装，输入 /cloudlyrics launch 启动网易云连接。'''
+authors="幼幼紫"
+logoFile="cloudlyrics-logo.png"
+logoBlur=false
+displayURL="https://github.com/uuzsx/CloudLyrics"
+description='''让音乐陪你挖矿、建造与冒险。
+
+云歌词会跟随 Windows 网易云音乐的播放进度，将歌词逐句显示在 Minecraft 聊天框。支持切歌、暂停、循环与同步微调，无需开启网易云桌面歌词或歌词页。
+
+歌词仅自己可见，不会发送到服务器。安装对应版本的单个 JAR，进入世界输入 /cloudlyrics launch 即可按提示连接。'''
 
 [[dependencies.cloudlyrics]]
 modId="neoforge"
